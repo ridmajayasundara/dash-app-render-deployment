@@ -77,7 +77,7 @@ app.layout = html.Div(
             value=data.columns[1],
             style={'width': '100%', 'margin-bottom': '10px'}
         )
-    ], style={'width': '30%', 'display': 'inline-block', 'vertical-align': 'top'}),
+    ], style={'background-color': 'grey','width': '30%', 'display': 'inline-block', 'vertical-align': 'top'}),
     
     dcc.Graph(id='correlation_plot'),
     
