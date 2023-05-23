@@ -7,6 +7,8 @@ import plotly.express as px
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output, State
+from sklearn.feature_selection import SelectKBest, f_classif
+
 
  # Load dataset
 data = pd.read_csv('data/winequality-red.csv')
@@ -22,10 +24,21 @@ data['quality'] = data['quality'].apply(lambda x: 1 if x >= 6.0 else 0)
 X = data.drop('quality', axis=1)
 # Set the target variable as the label
 y = data['quality']
+# == = = = = == 
 
+# Select the top 8 features using SelectKBest
+kbest = SelectKBest(score_func=f_classif, k=8)
+X_new = kbest.fit_transform(X, y)
 
-# Split the dat a into training and testing sets (80% training, 20% testing)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
+# Print the selected features
+print(X.columns[kbest.get_support()])
+
+# Reassign the selected features to X
+X = X[X.columns[kbest.get_support()]]
+# = = == = = =
+
+# Split the dat a into training and testing sets (80% training, 40% testing)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.40, random_state=42)
 # Create an instance of the logistic regression model
 logreg_model = LogisticRegression()
 # Fit the model to the training data
